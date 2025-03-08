@@ -7,17 +7,17 @@ export default function AuthLayout({
 }) {
   return (
     <main className="relative h-screen w-full">
-    <div className="absolute size-full">
-      <Image
-        src="/images/auth-bg.jpg"
-        alt="background"
-        fill
-        className="size-full"
-      />
-    </div>
-    <div className="flex flex-col items-center justify-center h-screen opacity-85">
+      <div className="absolute size-full">
+        <Image
+          src="/images/auth-bg.jpg" // we can simply omit the /public path
+          alt="background"
+          fill
+          className="size-full"
+        />
+      </div>
+      <div className="flex flex-col items-center justify-center h-screen opacity-85">
         {children}
-    </div>
-  </main>
+      </div>
+    </main>
   );
 }
