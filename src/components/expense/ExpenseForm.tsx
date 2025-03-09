@@ -57,26 +57,20 @@ export default function ExpenseForm({
       return;
     }
 
-    try {
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
-      if (isEditing && expense) {
-        // 更新現有報帳
-        await updateExpense(expense.id, formData);
-        router.push(`/expenses/${expense.id}`);
-      } else {
-        // 創建新報帳
-        await createExpense(formData, user.id);
-        router.push("/expenses");
-      }
-
-      router.refresh();
-    } catch (error) {
-      console.error("報帳提交錯誤:", error);
-      alert("報帳提交失敗，請稍後再試");
-    } finally {
-      setIsSubmitting(false);
+    if (isEditing && expense) {
+      // 更新現有報帳
+      await updateExpense(expense.id, formData);
+      router.push(`/expense/${expense.id}`);
+    } else {
+      // 創建新報帳
+      await createExpense(formData, user.id);
+      router.push("/expense");
     }
+
+    router.refresh();
+    setIsSubmitting(false);
   };
 
   return (

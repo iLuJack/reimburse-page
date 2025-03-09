@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -68,7 +70,7 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
 
       if (error) throw error;
 
-      router.push("/expenses");
+      router.push("/expense");
       router.refresh();
     } catch (error) {
       console.error("刪除失敗:", error);
@@ -93,7 +95,7 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
         </div>
         <div className="flex gap-2">
           <Link
-            href="/expenses"
+            href="/expense"
             className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
@@ -103,7 +105,7 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
           {isOwner && (
             <>
               <Link
-                href={`/expenses/${expense.id}/edit`}
+                href={`/expense/${expense.id}/edit`}
                 className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
                 <Pencil className="h-4 w-4 mr-1" />

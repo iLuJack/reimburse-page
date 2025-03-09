@@ -63,7 +63,7 @@ export default function ExpenseList() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">我的報帳紀錄</h1>
         <Link
-          href="/expenses/new"
+          href="/expense/new"
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
         >
           <Plus className="mr-2 h-5 w-5" />
@@ -76,7 +76,7 @@ export default function ExpenseList() {
           {expenses.map((expense) => (
             <li key={expense.id}>
               <Link
-                href={`/expenses/${expense.id}`}
+                href={`/expense/${expense.id}`}
                 className="block hover:bg-gray-50"
               >
                 <div className="px-4 py-4 sm:px-6">
