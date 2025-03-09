@@ -5,9 +5,12 @@ import { NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher(["/", "/sign-in", "/sign-up"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // const path = new URL(req.url).pathname;
+  const path = new URL(req.url).pathname;
 
   const userId = await auth().then(({ userId }) => userId);
+  if (path === "/" && userId) {
+    return NextResponse.redirect(new URL("/expense", req.url));
+  }
   if (isPublicRoute(req)) {
     return NextResponse.next();
   }

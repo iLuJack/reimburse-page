@@ -46,12 +46,12 @@ function Welcome() {
           <button
             className="group
               absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-              flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-3 via-blue-2 to-blue-2/60 
+              flex items-center justify-center gap-2 rounded-full bg-white/60
               w-[120px] md:w-[160px]
               px-4 md:px-6 py-2 md:py-3
               text-sm md:text-base lg:text-lg text-white-1 
               shadow-lg transition-all duration-300
-              hover:bg-gradient-to-r hover:from-blue-400/80 hover:via-blue-3 hover:to-blue-2/80
+              hover:bg-gradient-to-r hover:from-blue-400/80 hover:via-blue-400/60 hover:to-blue-400/40
               hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]
               hover:scale-105
               "
