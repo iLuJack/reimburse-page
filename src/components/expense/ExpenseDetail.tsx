@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -26,6 +26,43 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
   const router = useRouter();
   const { user } = useUser();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [receiptUrl, setReceiptUrl] = useState<string | null>(null);
+  const [isLoadingReceipt, setIsLoadingReceipt] = useState(true);
+
+  useEffect(() => {
+    const fetchReceiptUrl = async () => {
+      if (expense.receipt_url) {
+        try {
+          setIsLoadingReceipt(true);
+          // Extract the path from the full URL
+          const filePathMatch = expense.receipt_url.match(/receipts\/([^?]+)/);
+          if (filePathMatch && filePathMatch[1]) {
+            const filePath = filePathMatch[1];
+
+            // Get a signed URL that's valid for 60 minutes
+            const { data: signedUrl, error } = await supabase.storage
+              .from("receipts")
+              .createSignedUrl(filePath, 3600);
+
+            if (error) {
+              console.error("Error getting signed URL:", error);
+              return;
+            }
+
+            setReceiptUrl(signedUrl.signedUrl);
+          }
+        } catch (error) {
+          console.error("Error fetching receipt:", error);
+        } finally {
+          setIsLoadingReceipt(false);
+        }
+      } else {
+        setIsLoadingReceipt(false);
+      }
+    };
+
+    fetchReceiptUrl();
+  }, [expense.receipt_url]);
 
   // 格式化金額
   const formatAmount = (amount: number) => {
@@ -58,7 +95,13 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
       if (expense.receipt_url) {
         const filePathMatch = expense.receipt_url.match(/receipts\/([^?]+)/);
         if (filePathMatch && filePathMatch[1]) {
-          await supabase.storage.from("receipts").remove([filePathMatch[1]]);
+          const { error: removeError } = await supabase.storage
+            .from("receipts")
+            .remove([filePathMatch[1]]);
+
+          if (removeError) {
+            console.error("Error removing file:", removeError);
+          }
         }
       }
 
@@ -81,6 +124,55 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
 
   // 檢查當前用戶是否為此報帳的創建者
   const isOwner = user?.id === expense.user_id;
+
+  // Update the receipt rendering section
+  const renderReceipt = () => {
+    if (isLoadingReceipt) {
+      return <div className="text-gray-500">載入中...</div>;
+    }
+
+    if (!expense.receipt_url) {
+      return <span className="text-gray-500 italic">無上傳發票</span>;
+    }
+
+    return (
+      <div className="border border-gray-200 rounded-md overflow-hidden">
+        {/\.(jpg|jpeg|png|gif|webp)$/i.test(expense.receipt_url) ? (
+          // Image file preview
+          <a
+            href={receiptUrl || expense.receipt_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <img
+              src={receiptUrl || expense.receipt_url}
+              alt="Receipt"
+              className="max-h-64 w-full object-contain mx-auto"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                console.error("Error loading image:", expense.receipt_url);
+              }}
+            />
+            <div className="p-2 text-center text-sm text-indigo-600 hover:underline">
+              查看原始大小
+            </div>
+          </a>
+        ) : (
+          // Non-image file preview
+          <a
+            href={receiptUrl || expense.receipt_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center p-4 text-indigo-600 hover:underline"
+          >
+            <FileText className="h-6 w-6 mr-2" />
+            查看/下載文件
+          </a>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -185,45 +277,15 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
               發票/收據
             </dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {expense.receipt_url ? (
-                <div className="border border-gray-200 rounded-md overflow-hidden">
-                  {expense.receipt_url.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                    <a
-                      href={expense.receipt_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <img
-                        src={expense.receipt_url}
-                        alt="Receipt"
-                        className="max-h-64 object-contain mx-auto"
-                      />
-                      <div className="p-2 text-center text-sm text-indigo-600 hover:underline">
-                        查看原始大小
-                      </div>
-                    </a>
-                  ) : (
-                    <a
-                      href={expense.receipt_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center p-4 text-indigo-600 hover:underline"
-                    >
-                      <FileText className="h-6 w-6 mr-2" />
-                      查看/下載文件
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <span className="text-gray-500 italic">無上傳發票</span>
-              )}
+              {renderReceipt()}
             </dd>
           </div>
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">建立時間</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {new Date(expense.created_at).toLocaleString("zh-TW")}
+              {expense.created_at
+                ? new Date(expense.created_at).toLocaleString("zh-TW")
+                : "未知"}
             </dd>
           </div>
         </dl>

@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import ExpenseDetail from "@/components/expense/ExpenseDetail";
 import { getExpenseById } from "@/utils/supabase/expenses";
+import ExpenseDetail from "@/components/expense/ExpenseDetail";
 
 interface ExpenseDetailPageProps {
   params: {
@@ -13,15 +12,17 @@ export async function generateMetadata({
   params,
 }: ExpenseDetailPageProps): Promise<Metadata> {
   try {
-    const expense = await getExpenseById(params.id);
+    const id = await Promise.resolve(params.id);
+    const expense = await getExpenseById(id);
+
     return {
       title: `${expense.purpose} | 報帳詳情`,
       description: `報帳詳情：${expense.purpose}`,
     };
   } catch (error) {
     return {
-      title: "報帳詳情 | 報帳系統",
-      description: "查看報帳詳細資訊",
+      title: "報帳詳情",
+      description: "報帳詳情頁面",
     };
   }
 }
@@ -30,7 +31,8 @@ export default async function ExpenseDetailPage({
   params,
 }: ExpenseDetailPageProps) {
   try {
-    const expense = await getExpenseById(params.id);
+    const id = await Promise.resolve(params.id);
+    const expense = await getExpenseById(id);
 
     return (
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -38,6 +40,12 @@ export default async function ExpenseDetailPage({
       </div>
     );
   } catch (error) {
-    return notFound();
+    return (
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg p-4">
+          <p className="text-red-500">無法載入報帳詳情</p>
+        </div>
+      </div>
+    );
   }
 }

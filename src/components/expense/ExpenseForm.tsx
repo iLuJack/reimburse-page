@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import { createExpense, updateExpense } from "@/utils/supabase/expenses";
+import { updateExpense } from "@/utils/supabase/expenses";
 import { Expense, ExpenseFormData } from "@/types";
 
 // 導入表單欄位組件
@@ -59,18 +59,46 @@ export default function ExpenseForm({
 
     setIsSubmitting(true);
 
-    if (isEditing && expense) {
-      // 更新現有報帳
-      await updateExpense(expense.id, formData);
-      router.push(`/expense/${expense.id}`);
-    } else {
-      // 創建新報帳
-      await createExpense(formData, user.id);
-      router.push("/expense");
-    }
+    try {
+      if (isEditing && expense) {
+        // 更新現有報帳
+        await updateExpense(expense.id, formData);
+        router.push(`/expense/${expense.id}`);
+      } else {
+        // 創建新報帳 - 使用 API endpoint
+        const formDataToSend = new FormData();
 
-    router.refresh();
-    setIsSubmitting(false);
+        // Add all form fields to FormData
+        Object.entries(formData).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            if (key === "receipt_file" && value instanceof File) {
+              formDataToSend.append("receipt_file", value);
+            } else {
+              formDataToSend.append(key, String(value));
+            }
+          }
+        });
+
+        const response = await fetch("/api/expenses", {
+          method: "POST",
+          body: formDataToSend, // Always send as FormData
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to create expense");
+        }
+
+        router.push("/expense");
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Error submitting expense:", error);
+      alert("提交失敗，請稍後再試");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

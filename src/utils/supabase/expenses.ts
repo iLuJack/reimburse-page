@@ -1,9 +1,17 @@
 import { supabase } from "@/utils/supabase/client";
 import { Expense, ExpenseFormData } from "@/types";
 
-export async function createExpense(data: ExpenseFormData, userId: string) {
+export async function createExpense(
+  data: ExpenseFormData,
+  userId: string,
+  email: string,
+) {
   try {
     let receiptUrl = "";
+
+    if (!email) {
+      throw new Error("User email not found");
+    }
 
     if (data.receipt_file) {
       console.log(
@@ -52,6 +60,7 @@ export async function createExpense(data: ExpenseFormData, userId: string) {
         amount: data.amount,
         participants: data.participants,
         receipt_url: receiptUrl,
+        email: email,
       })
       .select()
       .single();

@@ -9,7 +9,7 @@ export default clerkMiddleware(async (auth, req) => {
   const path = url.pathname;
 
   // Special handling for webhook routes
-  if (path.startsWith('/api/webhooks')) {
+  if (path.startsWith("/api/webhooks")) {
     return NextResponse.next();
   }
 
