@@ -27,6 +27,8 @@ function Welcome() {
             </div>
             <div className="aspect-video w-full">
               <Image
+                width={1300}
+                height={731}
                 alt="Demo Interface"
                 className="h-full w-full 
                   rounded-b-[14px] 

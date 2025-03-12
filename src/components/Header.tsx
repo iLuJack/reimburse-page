@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton, SignUpButton } from "@clerk/nextjs";
 import { FiUserPlus } from "react-icons/fi"; // Feather icons
 export default function Header() {
   return (
@@ -7,9 +7,15 @@ export default function Header() {
         <SignInButton>
           <button className="hover:underline flex flex-row items-center">
             <FiUserPlus className="mr-2 h-4 w-4" />
-            Sign In
+            登入
           </button>
         </SignInButton>
+        <SignUpButton>
+          <button className="hover:underline flex flex-row items-center">
+            <FiUserPlus className="mr-2 h-4 w-4" />
+            註冊
+          </button>
+        </SignUpButton>
       </SignedOut>
       <SignedIn>
         <UserButton />

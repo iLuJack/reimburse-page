@@ -1,4 +1,4 @@
 export const DEMO_VIDEO = {
-  url: "https://www.youtube.com/embed/c6wUv6MejD8?si=Caul5SFPkyJ2Z2Hb",
+  url: "https://www.youtube.com/embed/HkzemGmr9Ks?si=t_C39bTwvAkdDlyU",
   thumbnail: "/images/auth-bg.jpg",
 };
