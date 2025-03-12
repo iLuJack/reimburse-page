@@ -178,43 +178,41 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
 
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-        <div>
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            報帳詳情
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            此報帳的所有詳細資訊
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            href="/expense"
-            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            返回列表
-          </Link>
+      <div className="px-4 py-5 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">報帳詳情</h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">此報帳的所有詳細資訊</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/expense"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              返回列表
+            </Link>
 
-          {isOwner && (
-            <>
-              <Link
-                href={`/expense/${expense.id}/edit`}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                <Pencil className="h-4 w-4 mr-1" />
-                編輯
-              </Link>
-              <button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
-              >
-                <Trash className="h-4 w-4 mr-1" />
-                {isDeleting ? "刪除中..." : "刪除"}
-              </button>
-            </>
-          )}
+            {isOwner && (
+              <>
+                <Link
+                  href={`/expense/${expense.id}/edit`}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  <Pencil className="h-4 w-4 mr-1" />
+                  編輯
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                >
+                  <Trash className="h-4 w-4 mr-1" />
+                  {isDeleting ? "刪除中..." : "刪除"}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <div className="border-t border-gray-200">

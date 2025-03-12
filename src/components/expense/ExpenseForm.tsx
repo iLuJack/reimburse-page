@@ -102,111 +102,115 @@ export default function ExpenseForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto px-4 sm:px-6">
+      <h1 className="text-xl sm:text-2xl font-bold">
         {isEditing ? "編輯報帳" : "新增報帳"}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            費用類型
-          </label>
-          <select
-            name="expense_type"
-            value={formData.expense_type}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-          >
-            <option value="">請選擇費用類型</option>
-            <option value="餐飲">餐飲</option>
-            <option value="交通">交通</option>
-            <option value="住宿">住宿</option>
-            <option value="辦公用品">辦公用品</option>
-            <option value="其他">其他</option>
-          </select>
-        </div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              費用類型
+            </label>
+            <select
+              name="expense_type"
+              value={formData.expense_type}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full rounded-md border border-gray-300 py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-base"
+            >
+              <option value="">請選擇費用類型</option>
+              <option value="餐飲">餐飲</option>
+              <option value="交通">交通</option>
+              <option value="住宿">住宿</option>
+              <option value="辦公用品">辦公用品</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            交易日期
-          </label>
-          <input
-            type="date"
-            name="transaction_date"
-            value={formData.transaction_date}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              交易日期
+            </label>
+            <input
+              type="date"
+              name="transaction_date"
+              value={formData.transaction_date}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full rounded-md border border-gray-300 py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-base"
+            />
+          </div>
 
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">
-            參與者
-          </label>
-          <input
-            type="text"
-            name="participants"
-            value={formData.participants}
-            onChange={handleChange}
-            placeholder="請輸入參與者姓名，多人以逗號分隔"
-            required
-            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-          />
-        </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">
+              參與者
+            </label>
+            <input
+              type="text"
+              name="participants"
+              value={formData.participants}
+              onChange={handleChange}
+              placeholder="請輸入參與者姓名，多人以逗號分隔"
+              required
+              className="mt-1 block w-full rounded-md border border-gray-300 py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-base"
+            />
+          </div>
 
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">
-            費用目的
-          </label>
-          <textarea
-            name="purpose"
-            value={formData.purpose}
-            onChange={handleChange}
-            required
-            rows={3}
-            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-          />
-        </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">
+              費用目的
+            </label>
+            <textarea
+              name="purpose"
+              value={formData.purpose}
+              onChange={handleChange}
+              required
+              rows={3}
+              className="mt-1 block w-full rounded-md border border-gray-300 py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-base"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            金額
-          </label>
-          <input
-            type="number"
-            name="amount"
-            value={formData.amount || ""}
-            onChange={handleChange}
-            required
-            min="0"
-            step="0.01"
-            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              金額
+            </label>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount || ""}
+              onChange={handleChange}
+              required
+              min="0"
+              step="0.01"
+              className="mt-1 block w-full rounded-md border border-gray-300 py-2.5 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-base"
+            />
+          </div>
 
-        <div className="md:col-span-2">
-          <FileUpload onChange={handleFileChange} />
+          <div className="md:col-span-2">
+            <FileUpload onChange={handleFileChange} />
+          </div>
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="mr-3 inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-        >
-          取消
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-        >
-          {isSubmitting ? "提交中..." : isEditing ? "更新報帳" : "提交報帳"}
-        </button>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 sm:relative sm:border-0 sm:p-0 sm:bg-transparent">
+        <div className="flex gap-3 max-w-2xl mx-auto">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="flex-1 sm:flex-none rounded-md border border-gray-300 bg-white py-2.5 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+          >
+            取消
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-1 sm:flex-none rounded-md border border-transparent bg-indigo-600 py-2.5 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50"
+          >
+            {isSubmitting ? "提交中..." : isEditing ? "更新報帳" : "提交報帳"}
+          </button>
+        </div>
       </div>
     </form>
   );
