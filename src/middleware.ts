@@ -5,7 +5,13 @@ import { NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher(["/", "/sign-in", "/sign-up"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  const path = new URL(req.url).pathname;
+  const url = new URL(req.url);
+  const path = url.pathname;
+
+  // Special handling for webhook routes
+  if (path.startsWith('/api/webhooks')) {
+    return NextResponse.next();
+  }
 
   const userId = await auth().then(({ userId }) => userId);
   if (path === "/" && userId) {
