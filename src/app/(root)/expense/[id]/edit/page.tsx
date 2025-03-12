@@ -1,20 +1,19 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import ExpenseForm from "@/components/expense/ExpenseForm";
 import { getExpenseById } from "@/utils/supabase/expenses";
 
-interface EditExpensePageProps {
-  params: {
-    id: string;
-  };
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({
   params,
-}: EditExpensePageProps): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   try {
-    const expense = await getExpenseById(params.id);
+    const resolvedParams = await params;
+    const expense = await getExpenseById(resolvedParams.id);
     return {
       title: `編輯 - ${expense.purpose} | 報帳系統`,
       description: `編輯報帳: ${expense.purpose}`,
@@ -27,16 +26,15 @@ export async function generateMetadata({
   }
 }
 
-export default async function EditExpensePage({
-  params,
-}: EditExpensePageProps) {
+export default async function EditExpensePage({ params }: PageProps) {
   const user = await currentUser();
   if (!user) {
-    redirect("/sign-in");
+    return notFound();
   }
 
   try {
-    const expense = await getExpenseById(params.id);
+    const resolvedParams = await params;
+    const expense = await getExpenseById(resolvedParams.id);
 
     // 確認用戶有權限編輯此報帳
     if (expense.user_id !== user.id) {
