@@ -11,15 +11,16 @@ interface ExpenseDetailPageProps {
 export async function generateMetadata({
   params,
 }: ExpenseDetailPageProps): Promise<Metadata> {
-  try {
-    const id = await Promise.resolve(params.id);
-    const expense = await getExpenseById(id);
+  const id = await Promise.resolve(params.id);
 
+  try {
+    const expense = await getExpenseById(id);
     return {
       title: `${expense.purpose} | 報帳詳情`,
       description: `報帳詳情：${expense.purpose}`,
     };
-  } catch (_error) {
+  } catch {
+    // Fallback metadata if expense not found
     return {
       title: "報帳詳情",
       description: "報帳詳情頁面",
@@ -30,16 +31,17 @@ export async function generateMetadata({
 export default async function ExpenseDetailPage({
   params,
 }: ExpenseDetailPageProps) {
-  try {
-    const id = await Promise.resolve(params.id);
-    const expense = await getExpenseById(id);
+  const id = await Promise.resolve(params.id);
 
+  try {
+    const expense = await getExpenseById(id);
     return (
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <ExpenseDetail expense={expense} />
       </div>
     );
-  } catch (_error) {
+  } catch {
+    // Fallback UI if expense not found
     return (
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg p-4">

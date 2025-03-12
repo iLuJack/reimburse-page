@@ -17,6 +17,7 @@ import {
   Trash,
 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
+import Image from "next/image";
 
 interface ExpenseDetailProps {
   expense: Expense;
@@ -138,16 +139,17 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
     return (
       <div className="border border-gray-200 rounded-md overflow-hidden">
         {/\.(jpg|jpeg|png|gif|webp)$/i.test(expense.receipt_url) ? (
-          // Image file preview
           <a
             href={receiptUrl || expense.receipt_url}
             target="_blank"
             rel="noopener noreferrer"
             className="block"
           >
-            <img
+            <Image
               src={receiptUrl || expense.receipt_url}
               alt="Receipt"
+              width={800}
+              height={600}
               className="max-h-64 w-full object-contain mx-auto"
               onError={(e) => {
                 e.currentTarget.onerror = null;

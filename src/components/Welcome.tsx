@@ -4,7 +4,7 @@ import { Play, Circle } from "lucide-react";
 import { useState } from "react";
 import VideoPopup from "@/components/VideoPopup";
 import { DEMO_VIDEO } from "@/constants/index";
-
+import Image from "next/image";
 function Welcome() {
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
 
@@ -26,7 +26,7 @@ function Welcome() {
               </div>
             </div>
             <div className="aspect-video w-full">
-              <img
+              <Image
                 alt="Demo Interface"
                 className="h-full w-full 
                   rounded-b-[14px] 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Upload } from "lucide-react";
+import Image from "next/image";
 
 interface FileUploadProps {
   onChange: (file: File | undefined) => void;
@@ -55,10 +56,12 @@ export default function FileUpload({ onChange }: FileUploadProps) {
 
       {preview && (
         <div className="mt-2">
-          <img
+          <Image
             src={preview}
-            alt="Receipt preview"
-            className="h-24 object-contain"
+            alt="File preview"
+            width={200}
+            height={200}
+            className="max-w-full h-auto"
           />
         </div>
       )}

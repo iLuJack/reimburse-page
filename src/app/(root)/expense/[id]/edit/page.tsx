@@ -19,7 +19,7 @@ export async function generateMetadata({
       title: `編輯 - ${expense.purpose} | 報帳系統`,
       description: `編輯報帳: ${expense.purpose}`,
     };
-  } catch (_error) {
+  } catch {
     return {
       title: "編輯報帳 | 報帳系統",
       description: "編輯報帳資料",
@@ -55,7 +55,7 @@ export default async function EditExpensePage({
         <ExpenseForm expense={expense} isEditing />
       </div>
     );
-  } catch (error) {
+  } catch {
     return notFound();
   }
 }
