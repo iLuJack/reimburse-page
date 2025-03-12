@@ -117,7 +117,7 @@ export async function updateExpense(id: string, data: ExpenseFormData) {
     const fileName = `${id}/${Date.now()}.${fileExt}`;
 
     // Standard Supabase upload method
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("receipts")
       .upload(fileName, data.receipt_file, {
         cacheControl: "3600",

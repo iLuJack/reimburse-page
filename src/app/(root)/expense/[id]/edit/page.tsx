@@ -19,7 +19,7 @@ export async function generateMetadata({
       title: `編輯 - ${expense.purpose} | 報帳系統`,
       description: `編輯報帳: ${expense.purpose}`,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       title: "編輯報帳 | 報帳系統",
       description: "編輯報帳資料",

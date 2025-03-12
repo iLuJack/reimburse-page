@@ -19,7 +19,7 @@ export async function generateMetadata({
       title: `${expense.purpose} | 報帳詳情`,
       description: `報帳詳情：${expense.purpose}`,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       title: "報帳詳情",
       description: "報帳詳情頁面",
@@ -39,7 +39,7 @@ export default async function ExpenseDetailPage({
         <ExpenseDetail expense={expense} />
       </div>
     );
-  } catch (error) {
+  } catch (_error) {
     return (
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg p-4">
